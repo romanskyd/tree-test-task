@@ -10,7 +10,8 @@
 
   const form = reactive({
     name: '',
-    isFile: false
+    isFile: false,
+    isRoot: true
   })
 
   const add = () => {
@@ -30,7 +31,7 @@
         <n-checkbox v-model:checked="form.isFile">
           Is file?
         </n-checkbox>
-        <n-button type="info" @click="add">
+        <n-button type="info" @click="add" :disabled="!form.name">
           <n-icon size="22" style="margin-right: 4px;">
             <AddCircle32Regular />
           </n-icon>
