@@ -1,8 +1,12 @@
 <script setup>
-  import { ref, computed } from 'vue';
-  import { TreeNode } from '@/classes/TreeNode';
+  import {ref, computed} from 'vue';
+  import {TreeNode} from '@/classes/TreeNode';
+  import ModalNames from '@/shared/modal-names.enum';
+
   import {useTreeStore} from '@/stores/treeStore.js';
   const treeStore = useTreeStore();
+  import {useModalStore} from '@/stores/modalStore';
+  const modalStore = useModalStore();
 
   import ListItem from '@/components/ListItem.vue';
   import {
@@ -10,7 +14,8 @@
     NButton,
     NIcon,
     NInput,
-    NSpace
+    NSpace,
+    useDialog
   } from 'naive-ui';
   import {
     Document32Regular,
@@ -40,7 +45,6 @@
   }
 
   const remove = () => {
-    console.log( 'REMOVE' )
     if (node.value.isRoot) {
       treeStore.removeById(node.value.id)
     }
@@ -52,16 +56,35 @@
     isEdit.value = false
   }
 
-  const addChild = () => {
-    node.value.addChild( new TreeNode({
-      name: 'Child'
-    }) )
+  const addChild = (form) => {
+    node.value.addChild( new TreeNode(form) )
   }
+
+  const openModal = () => {
+    modalStore.open({ modalName: ModalNames.CREATE_NODE, data: {
+      callback: form => addChild(form)
+    } })
+  }
+
+  const dialog = useDialog()
+  const handleConfirmRemove = () => {
+    dialog.warning({
+      title: 'Confirm',
+      content: 'Are you sure?',
+      positiveText: 'Sure',
+      negativeText: 'Not Sure',
+      onPositiveClick: () => {
+        remove()
+      },
+      onNegativeClick: () => {
+      }
+    })
+  }
+
 </script>
 
 <template>
   <div class="list-item">
-
     <n-space align="center" justify="space-between">
       <n-space align="center" style="flex-grow: 1;">
         <n-icon size="28" style="margin-right: 4px;">
@@ -101,7 +124,6 @@
 
       </n-space>
 
-
       <n-space>
         <template v-if="!node.isFile">
           <n-button tertiary circle type="info" @click="node.toggle()" v-if="node.children.length > 0">
@@ -112,7 +134,7 @@
               </n-icon>
             </template>
           </n-button>
-          <n-button tertiary circle type="success" @click="addChild">
+          <n-button tertiary circle type="success" @click="openModal">
             <template #icon>
               <n-icon>
                 <AddCircle32Regular />
@@ -121,7 +143,7 @@
           </n-button>
         </template>
 
-        <n-button tertiary circle type="warning" @click="remove">
+        <n-button tertiary circle type="warning" @click="handleConfirmRemove">
           <template #icon>
             <n-icon>
               <Delete28Regular />

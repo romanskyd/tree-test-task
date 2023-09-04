@@ -1,53 +1,31 @@
 <script setup>
-  import { reactive } from 'vue';
+  import {NButton, NDialogProvider} from 'naive-ui';
 
-  import {useTreeStore} from '@/stores/treeStore.js';
+  import DefaultList from '@/components/DefaultList.vue';
+  import DefaultModal from '@/components/DefaultModal.vue';
+
+  import {useModalStore} from '@/stores/modalStore';
+  const modalStore = useModalStore();
+  import {useTreeStore} from '@/stores/treeStore';
   const treeStore = useTreeStore();
 
-  import {NSpace, NCard, NInput, NCheckbox, NButton, NIcon, } from 'naive-ui';
-  import {AddCircle32Regular} from '@vicons/fluent';
-  import ListItem from '@/components/ListItem.vue';
+  import ModalNames from '@/shared/modal-names.enum';
 
-  const form = reactive({
-    name: '',
-    isFile: false,
-    isRoot: true
-  })
-
-  const add = () => {
-    treeStore.create(form)
-    form.name = ''
-    form.isFile = false
+  const openModal = () => {
+    modalStore.open({ modalName: ModalNames.CREATE_NODE, data: {
+      callback: form => treeStore.create({...form, isRoot: true})
+    } })
   }
-
 </script>
 
 <template>
-  <main class="main">
-    <n-space vertical>
-
-      <n-card title="Add new item" size="medium">
-        <n-input v-model:value="form.name" type="text" placeholder="Name" style="margin-bottom: 1rem;" />
-        <n-checkbox v-model:checked="form.isFile">
-          Is file?
-        </n-checkbox>
-        <n-button type="info" @click="add" :disabled="!form.name">
-          <n-icon size="22" style="margin-right: 4px;">
-            <AddCircle32Regular />
-          </n-icon>
-          Add
-        </n-button>
-      </n-card>
-    </n-space>
-
-
-    <ListItem
-      v-for="node in treeStore.tree"
-      :key="node.id"
-      :node="node"
-    />
-
-  </main>
+  <n-dialog-provider>
+    <main class="main">
+      <n-button @click="openModal">Add root item</n-button>
+      <DefaultList />
+    </main>
+    <DefaultModal />
+  </n-dialog-provider>
 </template>
 
 <style scoped>
