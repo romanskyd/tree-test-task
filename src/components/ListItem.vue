@@ -174,6 +174,9 @@
     }
     &__name {
       margin-right: auto;
+      &:hover {
+        cursor: pointer;
+      }
     }
     &__content {
       display: flex;

@@ -1,14 +1,45 @@
-# tree-test-task
+# Тестовое задание на позицию - Frontend developer
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+ Задача:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+  Написать приложение на vue.js (версии 2 или 3) для вывода дерева
+  папок и файлов с возможностью редактирования названия и удаления
+  элементов. Для хранения состояния использовать vuex (либо
+  аналогичный инструмент).
 
-## Customize configuration
+  Начальная структура дерева:
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+    Dir 1
+
+      Dir 1-1
+
+        File 1-1-1
+
+        File 1-2
+
+    Dir 2
+
+      Dir 2-1
+
+        File 2-2
+
+        File 2
+
+  Примерный вид приложения:
+
+  ![Test task image](./public/test_task.png)
+
+  Основные требования:
+  - аккуратность, чистота кода
+  - комментарии в коде для непонятных участков
+
+
+
+
+
+
 
 ## Project Setup
 
@@ -28,9 +59,3 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-# tree-test-task
