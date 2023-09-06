@@ -28,7 +28,7 @@ const onPositiveClick = () => {
   if (!form.name) return
 
   const data = modalStore.getModalVisibleList[ModalNames.CREATE_NODE]
-  if ( typeof data.callback === 'function' ) {
+  if (data && typeof data.callback === 'function') {
     data.callback(form)
   }
 

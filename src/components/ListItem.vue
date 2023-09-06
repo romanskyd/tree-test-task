@@ -30,7 +30,7 @@
 
   const isEdit = ref(false)
   const changedName = ref('')
-  const props = defineProps([ 'node' ])
+  const props = defineProps(['node'])
   const emit = defineEmits(['remove-child'])
   const node = computed(() => props.node)
   const name = computed(() => props.node.name)
@@ -47,6 +47,7 @@
   const remove = () => {
     if (node.value.isRoot) {
       treeStore.removeById(node.value.id)
+      return
     }
     emit('remove-child', node.value.id)
   }
@@ -57,11 +58,11 @@
   }
 
   const addChild = (form) => {
-    node.value.addChild( new TreeNode(form) )
+    node.value.addChild(new TreeNode(form))
   }
 
   const openModal = () => {
-    modalStore.open({ modalName: ModalNames.CREATE_NODE, data: {
+    modalStore.open({modalName: ModalNames.CREATE_NODE, data: {
       callback: form => addChild(form)
     } })
   }
